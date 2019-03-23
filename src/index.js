@@ -1,16 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-/* import App from './App'; */
 import * as serviceWorker from './serviceWorker';
 import {createStore} from 'redux';
 import appReducer from './reducers';
-
-/* ReactDOM.render(<App />, document.getElementById('root')); */
+import {createPost, editPost} from './actions';
 
 let store = createStore(appReducer);
-console.log(store.getState());
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+/* const unsubscribe = store.subscribe(() => {
+ *     console.log('state changed:', store.getState());
+ * }); */
+/* store.dispatch({type: 'CREATE_POST', user: 'dan', text: 'hello world'}); */
+const root = document.getElementById('root');
+const render = () => {
+    root.innerHtml = '';
+    const {posts} = store.getState();
+    posts.forEach((post)=> {
+        const item = document.createElement('li');
+        const text = document.createTextNode(post.user + ' - ' + post.text);
+        item.appendChild(text);
+        root.appendChild(item);
+    });
+}
+const stopRender = store.subscribe(render);
+store.dispatch(createPost('dan', 'hello, world'));
+store.dispatch(createPost('des', 'second post'));
 serviceWorker.unregister();

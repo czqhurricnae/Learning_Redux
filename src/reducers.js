@@ -10,7 +10,7 @@ function postReducer (state = [], action) {
         case EDIT_POST: {
             const {type, id, ...newPost} = action;
             return state.map((oldPost, index) =>
-                             action.id === oldPost.id ? {...oldPost, ...newPost}
+                             action.id === index ? {...oldPost, ...newPost}
                                                       : oldPost);
         }
         default: return state;
